@@ -1,0 +1,66 @@
+<!-- home.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex min-h-screen bg-gray-100">
+  <!-- Left Sidebar -->
+  <div class="w-64 bg-white shadow-lg">
+    <div class="p-4 text-2xl font-bold text-blue-600">Chat App</div>
+    <div class="p-4">
+      <!-- User Information -->
+      <div class="mb-4">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMIYPQpAHWfspO8qrIdSO7Pkx-JpkIU03WVA&s" alt="User Avatar" class="w-10 h-10 rounded-full">
+        <span id="username" class="ml-2 font-semibold"><%= username %></span>
+      </div>
+      <!-- Navigation Links -->
+      <nav>
+        <ul>
+          <li><a href="#" class="block py-2 text-gray-700 hover:text-blue-600">Activity</a></li>
+          <li><a href="/view/<%= chatRoomId %>" class="block py-2 text-gray-700 hover:text-blue-600">Chats</a></li> <!-- Updated link to view.ejs -->
+          <li><a href="/room" class="block py-2 text-gray-700 hover:text-blue-600">Create or Join Room</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-6">
+    <h1 id="welcomeMessage" class="mb-4 text-2xl font-bold">Welcome <%= username %></h1>
+    <div class="grid grid-cols-3 gap-4">
+      <!-- Card 1 -->
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="mb-2 text-lg font-bold">Chats</h2>
+        <p class="text-gray-600">Start a new chat or continue a conversation.</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="mb-2 text-lg font-bold">Teams</h2>
+        <p class="text-gray-600">Collaborate with your teams.</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="mb-2 text-lg font-bold">Calendar</h2>
+        <p class="text-gray-600">Schedule and view meetings.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const username = "<%= username %>";
+      const chatRoomId = "<%= chatRoomId %>";
+      if (!username) {
+        // Redirect to login page if username is not found
+        window.location.href = '/';
+      }
+    });
+  </script>
+</body>
+</html>

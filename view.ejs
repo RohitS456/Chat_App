@@ -1,0 +1,34 @@
+<!-- view.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat History</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-6">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
+
+    <!-- Heading -->
+    <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Chat History</h2>
+
+    <!-- Messages Section -->
+    <div class="mt-6">
+      <div id="messages" class="bg-gray-200 p-4 rounded-lg h-64 overflow-y-auto mb-4">
+        <% messages.forEach(function(message) { %>
+          <div class="flex items-center mb-2">
+            <span class="font-bold mr-2"><%= message.username %></span>
+            <span class="text-gray-500 text-sm"><%= message.timestamp.toLocaleString() %></span>
+          </div>
+          <p><%= message.message %></p>
+          <hr class="my-2">
+        <% }); %>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

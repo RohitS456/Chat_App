@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Chat Room</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-6">
+
+  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
+
+    <!-- Heading -->
+    <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Create Chat Room</h2>
+
+    <!-- Form for creating chat room -->
+    <form id="createChatRoomForm" class="space-y-4" action="/chatroom" method="POST">
+
+      <!-- Chat Room Name -->
+      <div>
+        <label for="chatRoomName" class="block text-sm font-medium text-gray-700">Chat Room Name</label>
+        <input type="text" id="chatRoomName" name="chatRoomName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter chat room name" required>
+      </div>
+
+      <!-- Add Members Section -->
+      <div class="mt-4">
+        <label for="memberName" class="block text-sm font-medium text-gray-700">Add Members</label>
+        <div class="flex items-center space-x-2">
+          <input type="text" id="memberName" name="memberName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter member name">
+          <button type="button" id="addMemberBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none">Add Member</button>
+        </div>
+      </div>
+
+      <!-- Display added members -->
+      <div id="addedMembers" class="flex flex-wrap mt-2"></div>
+
+      <!-- Hidden input to store members list -->
+      <input type="hidden" name="members" id="membersInput">
+
+      <!-- Meet ID to join existing room -->
+      <div class="mt-4">
+        <label for="meetId" class="block text-sm font-medium text-gray-700">Join with Meet ID</label>
+        <input type="text" id="meetId" name="meetId" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter Meet ID">
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex justify-between mt-6">
+        <!-- Join with Meet ID button -->
+        <button type="button" id="joinWithMeetIdBtn" class="w-1/2 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 focus:outline-none">Join with Meet ID</button>
+        <!-- Create Chat Room button -->
+        <button type="submit" class="w-1/2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">Create Chat Room</button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const addMemberBtn = document.getElementById('addMemberBtn');
+      const memberNameInput = document.getElementById('memberName');
+      const addedMembersContainer = document.getElementById('addedMembers');
+      const createChatRoomForm = document.getElementById('createChatRoomForm');
+      const meetIdInput = document.getElementById('meetId');
+      const joinWithMeetIdBtn = document.getElementById('joinWithMeetIdBtn');
+      const membersInput = document.getElementById('membersInput');
+
+      // Array to store added members
+      let addedMembers = [];
+
+      // Function to add member to list
+      function addMember(memberName) {
+        addedMembers.push(memberName);
+        renderMembers();
+      }
+
+      // Function to remove member from list
+      function removeMember(memberName) {
+        addedMembers = addedMembers.filter(member => member !== memberName);
+        renderMembers();
+      }
+
+      // Function to render added members
+      function renderMembers() {
+        addedMembersContainer.innerHTML = '';
+        addedMembers.forEach(member => {
+          const memberDiv = document.createElement('div');
+          memberDiv.className = 'flex items-center bg-blue-200 px-2 py-1 rounded-lg mt-2 mr-2';
+          memberDiv.innerHTML = `
+            <span class="mr-2">${member}</span>
+            <button type="button" class="text-red-600 hover:text-red-700 focus:outline-none" data-member="${member}">Remove</button>
+          `;
+          memberDiv.querySelector('button').addEventListener('click', function() {
+            const memberName = this.getAttribute('data-member');
+            removeMember(memberName);
+          });
+          addedMembersContainer.appendChild(memberDiv);
+        });
+      }
+
+      // Event listener for adding member
+      addMemberBtn.addEventListener('click', function() {
+        const memberName = memberNameInput.value.trim();
+        if (memberName) {
+          addMember(memberName);
+          memberNameInput.value = '';
+        }
+      });
+
+      // Join with Meet ID button click event
+      joinWithMeetIdBtn.addEventListener('click', function() {
+        const meetId = meetIdInput.value.trim();
+        if (meetId) {
+          console.log('Joining chat room with Meet ID:', meetId);
+          // Handle joining with Meet ID logic here
+        }
+      });
+
+      // Submit form handling (Create Chat Room)
+      createChatRoomForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const chatRoomName = document.getElementById('chatRoomName').value;
+        membersInput.value = JSON.stringify(addedMembers);
+        this.submit();
+      });
+
+    });
+  </script>
+
+</body>
+</html>
